@@ -6,7 +6,7 @@ if(!isset($data)) {
     exit("ERRORE");
 }
 
-
+//Nios4
 $email= $data["email"];
 $righeDaAggiungere= $data["numRowsTagList"];
 $id_mailchimp= $data["id_mailchimp"];
