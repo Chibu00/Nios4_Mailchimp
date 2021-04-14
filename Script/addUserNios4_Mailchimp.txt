@@ -1,75 +1,91 @@
-		----------------VALUES SET BY THE USER--------------------------
-		apikey                = "*your Mailchimp API Key*"
-		mailchimp_list_id     = "*your Mailchimp List ID*"
-		email                 = "*name of your email field on your user table*"
-		tableName             = "*name of your tag_user table*"
-		tagNameField_tag_user = "*name of your tag name field on your tag_user table*"
-		url                   = "*your URL for adding a member*"
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+--Copyright of Chibuzo Udoji 2020
+--THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+--AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+--IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+--DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+--FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+--DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+--SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+--CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+--OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+--OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
 
-		----------------------------------------------------------------------------------------
-		----------------------------------------------------------------------------------------
+----------------------------------VALUES SET BY THE USER----------------------------------------
+apikey                = "*your Mailchimp API Key*"
+mailchimp_list_id     = "*your Mailchimp List ID*"
+email                 = "*name of your email field on your user table*"
+tableName             = "*name of your tag_user table*"
+tagNameField_tag_user = "*name of your tag name field on your tag_user table*"
+url                   = "*your URL for adding a member*"
 
-		if(apikey == "" or apikey == nil) then
-    			dataview.showerror("Invalid Mailchimp Key!")
-    			do return end
-		end
-		if(mailchimp_list_id == "" or mailchimp_list_id == nil) then
-    			dataview.showerror("Invalid Mailchimp List!")
-    			do return end
-		end
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
 
-		emailToAdd     = dataview.getvalue(email)
-		tabName        = dataview.tablename()
-		id             = dataview.gguid
-		tagList        = dataview.getatable(tableName)
-		numRowsTagList = tagList.countrows()
-		rowsTagList    = tagList.getrows()
-		tagToAdd       = {}
+if(apikey == "" or apikey == nil) then
+	dataview.showerror("Invalid Mailchimp Key!")
+	do return end
+end
+if(mailchimp_list_id == "" or mailchimp_list_id == nil) then
+	dataview.showerror("Invalid Mailchimp List!")
+	do return end
+end
 
-		if(numRowsTagList ~= 0) then
-    			for i = 1, numRowsTagList do
-        			table.insert(tagToAdd,rowsTagList[i].getvalue(tagNameField_tag_user))
-    			end
-		end
+emailToAdd     = dataview.getvalue(email)
+tabName        = dataview.tablename()
+id             = dataview.gguid
+tagList        = dataview.getatable(tableName)
+numRowsTagList = tagList.countrows()
+rowsTagList    = tagList.getrows()
+tagToAdd       = {}
 
-		if (id == nil or id == "") then
-    			dataview.showwarning("Save the user before proceeding")
-    			do return end
-		end
+if(numRowsTagList ~= 0) then
+	for i = 1, numRowsTagList do
+		table.insert(tagToAdd,rowsTagList[i].getvalue(tagNameField_tag_user))
+	end
+end
 
-		tab          = database.getsql("SELECT * FROM "..tabName.." WHERE gguid = '"..id.."'")
-		row          = tab.getrows()
-		id_mailchimp = row[1].getvalue("id_mailchimp")
+if (id == nil or id == "") then
+	dataview.showwarning("Save the user before proceeding")
+	do return end
+end
 
-		data = {}
-		data["email"] = emailToAdd
-		data["numRowsTagList"] = numRowsTagList
-		data["id_mailchimp"] = id_mailchimp
-		data["apikey"] = apikey
-		data["mailchimp_list_id"] = mailchimp_list_id
+tab          = database.getsql("SELECT * FROM "..tabName.." WHERE gguid = '"..id.."'")
+row          = tab.getrows()
+id_mailchimp = row[1].getvalue("id_mailchimp")
 
-		if(numRowsTagList ~= 0) then
-    			for i = 1, numRowsTagList do
-        			data["tag"..i] = tagToAdd[i]
-    			end
-		end
+data = {}
+data["email"] = emailToAdd
+data["numRowsTagList"] = numRowsTagList
+data["id_mailchimp"] = id_mailchimp
+data["apikey"] = apikey
+data["mailchimp_list_id"] = mailchimp_list_id
 
-		request = program.newhttprequest()
+if(numRowsTagList ~= 0) then
+	for i = 1, numRowsTagList do
+		data["tag"..i] = tagToAdd[i]
+	end
+end
 
-		value = request.sendpost(url,data,false)
+request = program.newhttprequest()
 
-		if (value == "ko") then
+value = request.sendpost(url,data,false)
+
+if (value == "ko") then
     
-    			dataview.showerror("The user is already on Mailchimp")
+	dataview.showerror("The user is already on Mailchimp")
     
-		elseif (value == "NoKey") then
+elseif (value == "NoKey") then
     
-    			dataview.showerror("No Mailchimp key")
-			do retunr end
+	dataview.showerror("No Mailchimp key")
+	do retunr end
     
-		else
+else
     
-    			row[1].setvalue("id_mailchimp",value)
-    			row[1].save()
-    			dataview.showconfirm("Successfully completed on Mailchimp")
-		end
+	row[1].setvalue("id_mailchimp",value)
+	row[1].save()
+	dataview.showconfirm("Successfully completed on Mailchimp")
+end
