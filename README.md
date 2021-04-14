@@ -31,6 +31,7 @@
 
 Limits of Mailchimp's services:
 	- When you insert a user to Mailchimp from Nios4, the user status will be SUBSCRIBED.
+	- When you insert a user to Mailchimp from Nios4, the user status will be SUBSCRIBED.
 	- You can change the email address of a user in Mailchimp only if this user is SUBSCRIBED.
 	- When you change a tag name, automatically changes all the tags connected to the associated users. It happen only if user stutus is SUBSCRIBED. For the UNSUBSCRIBED user the tag will be deleted automatically.
 	- Mailchimp not allow to modify the email address of an user with an email already present in archives. In this case our advice is to delete him and adding a new user with the right email address.
