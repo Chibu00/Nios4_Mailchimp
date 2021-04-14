@@ -1,39 +1,39 @@
-		-----------------------VALUES SET BY THE USER----------------------------
-		apikey            = "*your Mailchimp API Key*"
-		mailchimp_list_id = "*your Mailchimp List ID*"
-		email             = "*name of your email field on your user table*"
-		url               = "*your URL for removing a member*"
+-----------------------VALUES SET BY THE USER----------------------------
+apikey            = "*your Mailchimp API Key*"
+mailchimp_list_id = "*your Mailchimp List ID*"
+email             = "*name of your email field on your user table*"
+url               = "*your URL for removing a member*"
 
-		----------------------------------------------------------------------------------
-		----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
 
-		if(apikey == "" or apikey == nil) then
-    			program.showerror("Invalid Mailchimp Key!")
-    			do return end
-		end
-		if(mailchimp_list_id == "" or mailchimp_list_id == nil) then
-    			program.showerror("Invalid Mailchimp List!")
-    			do return end
-		end
+if(apikey == "" or apikey == nil) then
+	program.showerror("Invalid Mailchimp Key!")
+	do return end
+end
+if(mailchimp_list_id == "" or mailchimp_list_id == nil) then
+	program.showerror("Invalid Mailchimp List!")
+	do return end
+end
 
-		emailToDelete = datarow.getvalue("*name of your email field on your user table*")
-		tabName       = tableview.tablename()
+emailToDelete = datarow.getvalue("*name of your email field on your user table*")
+tabName       = tableview.tablename()
 
-		database.deletedatarowsql("DELETE FROM "..tabName.." WHERE "..email.." = '"..emailToDelete.."'")
+database.deletedatarowsql("DELETE FROM "..tabName.." WHERE "..email.." = '"..emailToDelete.."'")
 
-		data = {}
-		data["email"] = emailToDelete
-		data["apikey"] = apikey
-		data["mailchimp_list_id"] = mailchimp_list_id
+data = {}
+data["email"] = emailToDelete
+data["apikey"] = apikey
+data["mailchimp_list_id"] = mailchimp_list_id
 
-		request = program.newhttprequest()
-		value   = request.sendpost(url,data,false)
+request = program.newhttprequest()
+value   = request.sendpost(url,data,false)
 
-		if(value == "NoKey") then
-   			program.showerror("No Mailchimp Key")
-   			do return end
-		end
+if(value == "NoKey") then
+	program.showerror("No Mailchimp Key")
+   	do return end
+end
 
-		if(value == "ok") then
-   			program.showconfirm("Successfully removed on Mailchimp") 
-		end
+if(value == "ok") then
+	program.showconfirm("Successfully removed on Mailchimp") 
+end
