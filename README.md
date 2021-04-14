@@ -16,18 +16,18 @@
 5. In "Script" folder you can find all the necessary scripts you need to create in Nios4. In total, there are 6 scripts necessary for adding a user, creating a tag and their respective removals.
 
 6. Creation of the script for adding a user on Mailchimp:
-	- add a script on 'card action' inside the table where the emails are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* your data *). Check the value of the variables on Options->Fields.
+	- add a script on 'card action' inside the table where the emails are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* _your data_ *). Check the value of the variables on Options->Fields.
 
 7. Creation of the script for removing a user on Mailchimp:
-	- add a script on 'post delete card' inside the table where emails are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* your data *). Check the value of the variables on Options->Fields.
-	- add a script on 'pre delete table row' inside the table where emails are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* your data *). Check the value of the variables on Options->Fields.
+	- add a script on 'post delete card' inside the table where emails are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* _your data_ *). Check the value of the variables on Options->Fields.
+	- add a script on 'pre delete table row' inside the table where emails are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* _your data_ *). Check the value of the variables on Options->Fields.
 
 8. Creation of the script for adding a tag on Mailchimp:
-	- add a script on 'card action' inside the table where the tags are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* your data *). Check the value of the variables on Options->Fields.
+	- add a script on 'card action' inside the table where the tags are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* _your data_ *). Check the value of the variables on Options->Fields.
 
 9. Creation of the script for removing a tag on Mailchimp:
-	- add a script on 'post delete card' inside the table where the tags are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* your data *). Check the value of the variables on Options->Fields.
-	- add a script on 'pre delete table row' inside the table where the tags are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* your data *). Check the value of the variables on Options->Fields.
+	- add a script on 'post delete card' inside the table where the tags are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* _your data_ *). Check the value of the variables on Options->Fields.
+	- add a script on 'pre delete table row' inside the table where the tags are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* _your data_ *). Check the value of the variables on Options->Fields.
 
 Limits of Mailchimp's services:
 
