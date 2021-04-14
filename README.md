@@ -30,7 +30,6 @@
 	- add a script on 'pre delete table row' inside the table where the tags are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* _your data_ *). Check the value of the variables on Options->Fields.
 
 Limits of Mailchimp's services:
-
 	- When you insert a user to Mailchimp from Nios4, the user status will be SUBSCRIBED.
 	- You can change the email address of a user in Mailchimp only if this user is SUBSCRIBED.
 	- When you change a tag name, automatically changes all the tags connected to the associated users. It happen only if user stutus is SUBSCRIBED. For the UNSUBSCRIBED user the tag will be deleted automatically.
