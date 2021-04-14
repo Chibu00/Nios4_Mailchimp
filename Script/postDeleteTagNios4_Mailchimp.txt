@@ -1,40 +1,56 @@
-		-----------------------------VALUES SET BY THE USER------------------------------------------
-		apikey                      = "*your Mailchimp API Key*"
-		mailchimp_list_id           = "*your Mailchimp List ID*"
-		tagNameField_tag_table      = "*the name of your tag name field on your tag table*"
-		tag_user_table_name         = "*your tag_user table name*"
-		tagNameField_tag_user_table = "*the name of your tag_name field on your tag_user table*"
-		url                         = "*your URL for removing a tag*"
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+--Copyright of Chibuzo Udoji 2020
+--THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+--AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+--IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+--DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+--FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+--DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+--SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+--CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+--OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+--OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
 
-		------------------------------------------------------------------------------------------------
-		------------------------------------------------------------------------------------------------
+--------------------------------VALUES SET BY THE USER------------------------------------------
+apikey                      = "*your Mailchimp API Key*"
+mailchimp_list_id           = "*your Mailchimp List ID*"
+tagNameField_tag_table      = "*the name of your tag name field on your tag table*"
+tag_user_table_name         = "*your tag_user table name*"
+tagNameField_tag_user_table = "*the name of your tag_name field on your tag_user table*"
+url                         = "*your URL for removing a tag*"
 
-		if(apikey == "" or apikey == nil) then
-    			program.showerror("Invalid Mailchimp Key!")
-    			do return end
-		end
-		if(mailchimp_list_id == "" or mailchimp_list_id == nil) then
-    			program.showerror("Invalid Mailchimp List!")
-    			do return end
-		end
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
 
-		deletedTag = dataview.getvalue(tagNameField_tag_table)
+if(apikey == "" or apikey == nil) then
+	program.showerror("Invalid Mailchimp Key!")
+	do return end
+end
+if(mailchimp_list_id == "" or mailchimp_list_id == nil) then
+	program.showerror("Invalid Mailchimp List!")
+	do return end
+end
 
-		database.deletedatarowsql("DELETE FROM "..tag_user_table_name.." WHERE "..tagNameField_tag_user_table.." = '"..deletedTag.."'")
+deletedTag = dataview.getvalue(tagNameField_tag_table)
 
-		data = {}
-		data["deletedTag"] = deletedTag
-		data["apikey"] = apikey
-		data["mailchimp_list_id"] = mailchimp_list_id
+database.deletedatarowsql("DELETE FROM "..tag_user_table_name.." WHERE "..tagNameField_tag_user_table.." = '"..deletedTag.."'")
 
-		request = program.newhttprequest()
-		value   = request.sendpost(url,data,false)
+data = {}
+data["deletedTag"] = deletedTag
+data["apikey"] = apikey
+data["mailchimp_list_id"] = mailchimp_list_id
 
-		if(value == "NoKey") then
-    			program.showerror("No Mailchimp Key")
-    			do return end
-		end
+request = program.newhttprequest()
+value   = request.sendpost(url,data,false)
 
-		if(value == "ok") then 
-    			program.showconfirm("Successfully removed on Mailchimp")
-		end
+if(value == "NoKey") then
+	program.showerror("No Mailchimp Key")
+	do return end
+end
+
+if(value == "ok") then 
+	program.showconfirm("Successfully removed on Mailchimp")
+end
