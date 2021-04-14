@@ -1,5 +1,5 @@
 <?php
-//input da Nios4
+
 $data= json_decode(file_get_contents('php://input'), true);
 
 if(!isset($data)) {
@@ -15,12 +15,8 @@ if($apiKey != "") {
     $dc= substr($apiKey, strlen($apiKey)-3);
 }
 
-//dati necessari per le API Mailchimp
 $urlMailchimp= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/members/".$hashEmail;
 
-//prima di cancellarlo definitivamente cancello tutti i tag in riferimento a quell'utente perchè se poi dovessi ricreare lo stesso utente mi terrebbe i tags di prima
-//////////////////////////////////////////////////////////////////////////
-//////////////////FUNZIONE RIMOZIONE TUTTI I TAG///////////////////////////
 function deleteAllTag(string $emailHash, string $apikey, string $list_id, string $dc) {
     $urlAllTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$list_id."/segments?count=1000";
 
@@ -74,8 +70,6 @@ function deleteAllTag(string $emailHash, string $apikey, string $list_id, string
     curl_close($ch);
 
 }
-//////////////////////FINE FUNZIONE RIMOZIONE TUTTI I TAG///////////////////////
-////////////////////////////////////////////////////////////////////////////////
 
 deleteAllTag($hashEmail, $apiKey, $mailchimp_list_id, $dc);
 
