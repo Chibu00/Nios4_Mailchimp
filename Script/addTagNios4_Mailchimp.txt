@@ -4,6 +4,7 @@
 		tagNameField_tag_table      = "*the name of your tag name field on your tag table*"
 		tag_user_table_name         = "*your tag_user table name*"
 		tagNameField_tag_user_table = "*the name of your tag name field on your tag_user table*"
+		url                         = "*your URL for adding a tag*"
 
 		------------------------------------------------------------------------------------------------
 		------------------------------------------------------------------------------------------------
@@ -33,8 +34,6 @@
 		if(id_mailchimp ~= "" and id_mailchimp ~= nil) then
    	 		database.setsql("UPDATE "..tag_user_table_name.." SET "..tagNameField_tag_user_table.." = '"..tagName.."' WHERE gguid_"..tagNameField_tag_table.." = '"..id.."'")
 		end
-
-		url = "https://chibu.d-one.cloud/chibu/Mailchimp/createTag.php"
 
 		data = {}
 		data["tag"] = tagName

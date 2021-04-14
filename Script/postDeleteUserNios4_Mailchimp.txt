@@ -2,6 +2,7 @@
 		apikey            = "*your Mailchimp API Key*"
 		mailchimp_list_id = "*your Mailchimp List ID*"
 		email             = "*name of your email field on your user table*"
+		url               = "*your URL for removing a member*"
 
 		---------------------------------------------------------------------------
 		---------------------------------------------------------------------------
@@ -16,8 +17,6 @@
 		end
 
 		emailToDelete = dataview.getvalue(email)
-
-		url = "https://chibu.d-one.cloud/chibu/Mailchimp/archiveMember.php"
 
 		data    = {}
 		data["email"] = emailToDelete

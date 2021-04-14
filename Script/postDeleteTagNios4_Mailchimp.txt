@@ -4,6 +4,7 @@
 		tagNameField_tag_table      = "*the name of your tag name field on your tag table*"
 		tag_user_table_name         = "*your tag_user table name*"
 		tagNameField_tag_user_table = "*the name of your tag_name field on your tag_user table*"
+		url                         = "*your URL for removing a tag*"
 
 		------------------------------------------------------------------------------------------------
 		------------------------------------------------------------------------------------------------
@@ -20,8 +21,6 @@
 		deletedTag = dataview.getvalue(tagNameField_tag_table)
 
 		database.deletedatarowsql("DELETE FROM "..tag_user_table_name.." WHERE "..tagNameField_tag_user_table.." = '"..deletedTag.."'")
-
-		url = "https://chibu.d-one.cloud/chibu/Mailchimp/deleteTag.php"
 
 		data = {}
 		data["deletedTag"] = deletedTag

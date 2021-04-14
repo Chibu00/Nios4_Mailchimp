@@ -4,6 +4,7 @@
 		email                 = "*name of your email field on your user table*"
 		tableName             = "*name of your tag_user table*"
 		tagNameField_tag_user = "*name of your tag name field on your tag_user table*"
+		url                   = "*your URL for adding a member*"
 
 		----------------------------------------------------------------------------------------
 		----------------------------------------------------------------------------------------
@@ -35,8 +36,6 @@
     			dataview.showwarning("Save the user before proceeding")
     			do return end
 		end
-   
-		url          = "https://chibu.d-one.cloud/chibu/Mailchimp/addMember.php"
 
 		tab          = database.getsql("SELECT * FROM "..tabName.." WHERE gguid = '"..id.."'")
 		row          = tab.getrows()
