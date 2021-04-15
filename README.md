@@ -1,6 +1,6 @@
 **GUIDE FOR CONNECTING NIOS4 TO MAILCHIMP.**
 
-This guide will show you how to connect Nios4 to Mailchimp. After all these steps, through the implementation of an action, your management software system Nios4 will be able to automatically interact whit your own personal Mailchimp account, in such a way to have the email addresses with their respective tags on Mailchimp, without using manually the system.
+This guide will show you how to connect Nios4 to Mailchimp via PHP programming language. After all these steps, through the implementation of an action, your management software system Nios4 will be able to automatically interact whit your own personal Mailchimp account, in such a way to have the email addresses with their respective tags on Mailchimp, without using manually the system.
 
 The following are all the steps required for the connection to Mailchimp.
 
