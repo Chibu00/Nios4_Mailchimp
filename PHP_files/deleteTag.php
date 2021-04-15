@@ -14,8 +14,6 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 */
 
-//dati di input
-
 $data= json_decode(file_get_contents('php://input'), true);
 if(!isset($data)) {
     exit("ERROR!");
@@ -29,7 +27,6 @@ if($apiKey != "") {
     $dc= substr($apiKey, strlen($apiKey)-3);
 }
 
-//devo ricavarmi l'id del tag
 $urlIdTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/";
 $ch= curl_init();
 
@@ -40,7 +37,6 @@ curl_setopt($ch, CURLOPT_USERPWD, "user:".$apiKey);
 $responseIdTag= curl_exec($ch);
 curl_close($ch);
 $responseIdTag= json_decode($responseIdTag);
-//print_r($responseIdTag);
 
 if($responseIdTag->status == 401) {
     exit("NoKey");
@@ -65,7 +61,6 @@ if(!isset($idTag)) {
     exit("ko");
 }
 
-//cancellazione del tag tramite l'API Mailchimp
 $urlDeleteTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/".$idTag;
 
 $ch1= curl_init();
@@ -83,5 +78,3 @@ if(empty($response)) {
 } else {
     exit("ko");
 }
-
-
