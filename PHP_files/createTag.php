@@ -1,12 +1,27 @@
 <?php
 
+/*
+Copyright of Chibuzo Udoji 2021
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+*/
+
+//input da Nios4
 $data= json_decode(file_get_contents('php://input'), true);
 
 if(!isset($data)) {
-    exit("ERRORE");
+    exit("ERROR!");
 }
- 
-$nomeTag= $data["tag"];
+
+$tagName= $data["tag"];
 $id_mailchimp= $data["id_mailchimp"];
 $apiKey= $data["apikey"];
 $mailchimp_list_id= $data["mailchimp_list_id"];
@@ -15,14 +30,16 @@ if($apiKey != "") {
     $dc= substr($apiKey, strlen($apiKey)-3);
 }
 
-
+//controllo se id_mailchimp è impostato oppure no. Se è impostato vuol dire che il tag è già presente su Mailchimp
 if($id_mailchimp == "" || !isset($id_mailchimp)) {
+    //il tag non è presente su mailchimp. Crearlo!
+    //chiamata API Mailchimp per la creazione del tag
     $urlMailchimp= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments";
     
     $ch= curl_init();
 
     $dataMailchimp= array(
-        "name" => $nomeTag,
+        "name" => $tagName,
         "static_segment" => array(),
     );
 
@@ -50,6 +67,8 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
     }
     
 } else {
+    //il tag è già presente su mailchimp. Sono in modifica.    
+    //prendo tutti i membri che hanno quel tag per metterli in static_segment successivamente
     $urlAllMemberTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/".$id_mailchimp."/members?count=1000";
     
     $chAllMemberTag= curl_init();
@@ -66,17 +85,18 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
         exit("NoKey");
     }
     
-    $listaMembri= array();
+    $memberList= array();
     
     foreach ($responseAllMemberTag->members as $key => $value) {
-        array_push($listaMembri, $value->email_address);
+        array_push($memberList, $value->email_address);
     }
     
+    //adesso che ho la lista dei membri che hanno quel determinato tag posso modificare quel tag e modificare i membri con il nuovo tag
     $urlUpdateTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/".$id_mailchimp;
     
     $dataUpdateTag= array(
-        "name" => $nomeTag,
-        "static_segment" => $listaMembri,
+        "name" => $tagName,
+        "static_segment" => $memberList,
     );
     
     $dataUpdateTag= json_encode($dataUpdateTag);
@@ -101,3 +121,4 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
     }
     
 }
+

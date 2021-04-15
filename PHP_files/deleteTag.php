@@ -1,11 +1,27 @@
 <?php
 
+/*
+Copyright of Chibuzo Udoji 2021
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+*/
+
+//dati di input
+
 $data= json_decode(file_get_contents('php://input'), true);
 if(!isset($data)) {
-    exit("ERRORE");
+    exit("ERROR!");
 }
 
-$tagCancellato = $data["deletedTag"];
+$deletedTag = $data["deletedTag"];
 $apiKey= $data["apikey"];
 $mailchimp_list_id= $data["mailchimp_list_id"];
 
@@ -13,6 +29,7 @@ if($apiKey != "") {
     $dc= substr($apiKey, strlen($apiKey)-3);
 }
 
+//devo ricavarmi l'id del tag
 $urlIdTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/";
 $ch= curl_init();
 
@@ -23,6 +40,7 @@ curl_setopt($ch, CURLOPT_USERPWD, "user:".$apiKey);
 $responseIdTag= curl_exec($ch);
 curl_close($ch);
 $responseIdTag= json_decode($responseIdTag);
+//print_r($responseIdTag);
 
 if($responseIdTag->status == 401) {
     exit("NoKey");
@@ -31,9 +49,9 @@ if($responseIdTag->status == 401) {
 $idTag= null;
 
 if(array_key_exists("segments", $responseIdTag)) {
-    $listaTag= $responseIdTag->segments;
-    foreach ($listaTag as $key => $value) {
-        if($value->name == $tagCancellato) {
+    $tagList =$responseIdTag->segments;
+    foreach ($tagList as $key => $value) {
+        if($value->name == $deletedTag) {
             $idTag= $value->id;
             break;
         }
@@ -47,6 +65,7 @@ if(!isset($idTag)) {
     exit("ko");
 }
 
+//cancellazione del tag tramite l'API Mailchimp
 $urlDeleteTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/".$idTag;
 
 $ch1= curl_init();
@@ -64,3 +83,5 @@ if(empty($response)) {
 } else {
     exit("ko");
 }
+
+
