@@ -21,7 +21,6 @@ if(!isset($data)) {
     exit("ERROR!");
 }
 
-//dati da Nios4
 $email= $data["email"];
 $rowToAdd= $data["numRowsTagList"];
 $id_mailchimp= $data["id_mailchimp"];
@@ -40,9 +39,7 @@ if($rowToAdd != 0) {
     }
 }
 
-//controllo se è impostato un id_mailchimp all'utente. Se è impostato vuol dire che l'utente già esiste su mailchimp altrimenti no.
 if($id_mailchimp == "" || !isset($id_mailchimp)) {
-    //su mailchimp non c'è. Aggiungo il nuovo utente.
     $urlMailchimp= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/members";
 
     $dataInMailchimp= array(
@@ -71,15 +68,10 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
 
     if($responseMailchimp->status == 400) {
         exit("ko");
-       //print("L'utente è gia presente in Mailchimp");
-    } else {
-       //print("NUOVO UTENTE AGGIUNTO CORRETTAMENTE"); 
+    } else { 
         exit($responseMailchimp->id);
     }
 } else {
-    //è già presente su mailchimp..Faccio la modifica
-    //per fare la modifica prima mi tiro giu tutti gli utenti della lista con lo stesso id_mailchimp e salvo l'email corrispondente all'id_mailchimp. 
-    //Poi faccio l'update
     $urlMailchimpUser= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/members?count=1000";
     
     $chUser= curl_init();
@@ -107,9 +99,6 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
     
     $hashEmailToUpdate= hash("md5", $emailToUpdate);
     
-    //nel caso in cui io modifichi anche i tag corrispondeti all'utente devo prima eliminarli e poi aggiungere i nuovi tag 
-    //////////////////////////////////////////////////////////////////////////
-    //////////////////FUNZIONE RIMOZIONE TUTTI I TAG///////////////////////////
     function deleteAllTag(string $emailHash, string $list_id, string $apikey, string $dc) {
         $urlAllTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$list_id."/segments?count=1000";
 
@@ -159,11 +148,7 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
         curl_close($ch);
 
     }
-    //////////////////////FINE FUNZIONE RIMOZIONE TUTTI I TAG///////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
     
-    ////////////////////////////////////////////////////////////////////////////////
-    //////////////////////FUNZIONE DI AGGIUNTA TAG//////////////////////////////////
     function addTags(array $tagToAdd, string $emailHash, string $list_id, string $apikey, string $dc) {
         $urlAggiungiTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$list_id."/members/".$emailHash."/tags";
         
@@ -191,14 +176,10 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
         curl_setopt($chAddTag, CURLOPT_USERPWD, "user:".$apikey);
         
         $response= curl_exec($chAddTag);
-        //$response= json_decode($response);
         curl_close($chAddTag);
         
     }
-    //////////////////////FINE FUNZIONE DI AGGIUNTA TAG ////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////
     
-    //se non ho nessun tag allora io li cancello tutti, se invece ho dei tag mi devi fare l'aggiornamento eliminandoli tutti e aggiungendo quelli nuovi
     if(empty($tagList)) {
         deleteAllTag($hashEmailToUpdate, $mailchimp_list_id, $apiKey, $dc);
         
@@ -207,12 +188,10 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
         addTags($tagList, $hashEmailToUpdate, $mailchimp_list_id, $apiKey, $dc);
     }
     
-    //dopo aver aggiornato i tag posso procedere con l'update dei campi dell'utente
     $urlMailchimpUpdate= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/members/".$hashEmailToUpdate;
     
     $dataMailchimpUpdate= array(
         "email_address" => $email,
-        //"status" => "subscribed",
     );
     
     $dataMailchimpUpdate= json_encode($dataMailchimpUpdate);
@@ -230,13 +209,9 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
     $responseUpdate= json_decode($responseUpdate);
     curl_close($chUpdate);
     
-    //$dataMailchimpUpdate= json_decode($dataMailchimpUpdate);
     if(isset($responseUpdate->id)) {
         exit($responseUpdate->id);
     } else {
         exit("ko");
     }
 }
-
-
-
