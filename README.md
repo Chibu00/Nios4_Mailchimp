@@ -10,8 +10,8 @@ The following are all the steps required for the connection to Mailchimp.
 
 3. Make the following changes on Nios4:
 	- The email must be associated to an unique user, therefore the email field must not allow duplicates and must be required.
-	- Add a field on the table where the emails are located. This field must be text type and not editable. Name of the field-> "id_mailchimp". "id_mailchimp" field empty means that the user is not in your Mailchimp account, if it's not empty then the user is on your Mailchimp account.
-	- Create a table where all the tags will be saved. This table gives you the possibility to add and remove a tag. This table must not allow duplicates, the fields will be the name of the tag and "id_mailchimp" that will be text type and not editable. "id_mailchimp" field empty means that the tag is not in your Mailchimp account, if it's not empty then the tag is on your Mailchimp account.
+	- Add a field on the table where the emails are located. This field must be text type and not editable. Name of the field-> "id_mailchimp". "id_mailchimp" field empty means that the user is not on your Mailchimp account, if it's not empty then the user is on your Mailchimp account.
+	- Create a table where all the tags will be saved. This table gives you the possibility to add and remove a tag. This table must not allow duplicates, the fields will be the name of the tag and "id_mailchimp" that will be text type and not editable. "id_mailchimp" field empty means that the tag is not on your Mailchimp account, if it's not empty then the tag is on your Mailchimp account.
 	- Create another table. This table may not be visible, it will have a unique field that include a sub-table of the table where the emails will be located.
 	- The table where the emails will be located will have an additional table referencing to the table mentioned above.
 
