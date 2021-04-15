@@ -14,7 +14,6 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 */
 
-//input da Nios4
 $data= json_decode(file_get_contents('php://input'), true);
 
 if(!isset($data)) {
@@ -30,10 +29,7 @@ if($apiKey != "") {
     $dc= substr($apiKey, strlen($apiKey)-3);
 }
 
-//controllo se id_mailchimp è impostato oppure no. Se è impostato vuol dire che il tag è già presente su Mailchimp
 if($id_mailchimp == "" || !isset($id_mailchimp)) {
-    //il tag non è presente su mailchimp. Crearlo!
-    //chiamata API Mailchimp per la creazione del tag
     $urlMailchimp= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments";
     
     $ch= curl_init();
@@ -67,8 +63,6 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
     }
     
 } else {
-    //il tag è già presente su mailchimp. Sono in modifica.    
-    //prendo tutti i membri che hanno quel tag per metterli in static_segment successivamente
     $urlAllMemberTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/".$id_mailchimp."/members?count=1000";
     
     $chAllMemberTag= curl_init();
@@ -91,7 +85,6 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
         array_push($memberList, $value->email_address);
     }
     
-    //adesso che ho la lista dei membri che hanno quel determinato tag posso modificare quel tag e modificare i membri con il nuovo tag
     $urlUpdateTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/".$id_mailchimp;
     
     $dataUpdateTag= array(
@@ -121,4 +114,3 @@ if($id_mailchimp == "" || !isset($id_mailchimp)) {
     }
     
 }
-
