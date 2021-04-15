@@ -17,7 +17,7 @@ The following are all the steps required for the connection to Mailchimp.
 
 4. In "PHP_file" folder you can find all the required PHP files. You have to create a copy of each file and save them on your server.
 
-5. In "Script" folder you can find all the necessary scripts you need to create in Nios4. In total, there are 6 scripts necessary for adding a user, creating a tag and their respective removals.
+5. In "Script" folder you can find all the necessary scripts you need to create in Nios4. In total, there are 6 scripts necessary for adding a user, creating a tag and their respective removals. You need to copy the code of each script and paste it to your own.
 
 6. Creation of the script for adding a user on Mailchimp:
 	- add a script on 'card action' inside the table where the emails are located. Pay attention to insert the right parameters in the appropriate lines indicates with two stars (* _your data_ *). Check the value of the variables on Options->Fields.
