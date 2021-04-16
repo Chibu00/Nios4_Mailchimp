@@ -36,6 +36,33 @@ $tagList= array();
 if($rowToAdd != 0) {
     for($i = 1; $i <= $rowToAdd; $i++) {
         array_push($tagList, $data["tag$i"]);
+        
+        $tagOnMailchimp= false;
+        
+        $urlCheckTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments?count=1000";
+        
+        $ch= curl_init();
+        
+        curl_setopt($ch, CURLOPT_URL, $urlCheckTag);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, "user:".$apiKey);
+        
+        $response= curl_exec($ch);
+        $response= json_decode($response);
+        curl_close($ch);
+        
+        $allTagList= $response->segments;
+        
+        foreach ($allTagList as $key => $value) {
+            if($value->name == $data["tag$i"]) {
+                $tagOnMailchimp= true;
+                break;
+            }
+        }
+        
+        if(!$tagOnMailchimp) {
+            exit("insTag");
+        }
     }
 }
 
