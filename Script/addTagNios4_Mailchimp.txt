@@ -62,8 +62,13 @@ value   = request.sendpost(url,data,false)
 
 if(value == "ko") then
 	dataview.showerror("The tag is already on Mailchimp") 
+	do return end
 elseif (value == "NoKey") then
 	dataview.showerror("No Mailchimp Key")
+	do return end
+elseif (value == "insTag") then  
+    dataview.showerror("Add tag to Mailchimp on tag table")
+    do return end
 else
 	rows[1].setvalue("id_mailchimp",value)
 	rows[1].save()
