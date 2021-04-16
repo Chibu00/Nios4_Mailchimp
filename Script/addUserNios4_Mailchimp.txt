@@ -82,6 +82,11 @@ elseif (value == "NoKey") then
     
 	dataview.showerror("No Mailchimp key")
 	do retunr end
+	
+elseif (value == "insTag") then  
+
+    dataview.showerror("Add tag to Mailchimp on tag table")
+    do return end
     
 else
     
