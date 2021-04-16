@@ -27,7 +27,7 @@ if($apiKey != "") {
     $dc= substr($apiKey, strlen($apiKey)-3);
 }
 
-$urlIdTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments/";
+$urlIdTag= "https://".$dc.".api.mailchimp.com/3.0/lists/".$mailchimp_list_id."/segments?count=1000";
 $ch= curl_init();
 
 curl_setopt($ch, CURLOPT_URL, $urlIdTag);
